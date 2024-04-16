@@ -3,16 +3,11 @@ import os
 import sys
 from datetime import date
 
-#todo rechcek mutants for Ns - 44 Ns
-#todo lookup blanks to see
-#todo flesh out duplicate error checker
-
-#dictionary to hold sequences, a counter in case of duplicates, parent directory so python knows where to look, and fasta file
+#dictionary to hold sequences, a counter in case of duplicates
 mutdict = {}
 dupecounter = 0
 pdir = os.getcwd() + "/"
 fafile = "New_1200_Database/new_1200_NProtein_final_combined_final_amino_acid.fa"
-#opens the fasta file as literally a text file
 with open(pdir + fafile) as file:
     #lastmut used to check when onto next mutation - updates when it hits a ">"
     lastmut = ""
