@@ -4,7 +4,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from collections import Counter
 #opens the excel sheet as a dataframe so we can work with it in Pandas
-NTonly = pd.read_excel("WHO_1200_NProtein_seq.xlsx")
+NTonly = pd.read_excel("new_1200_NProtein_final_combined_final_transl.xlsx")
 NTseq = NTonly.iloc[:, [0]]
 NTseq
 #normalize lengths by adding 'N' to sequences shorter than the longest sequence
