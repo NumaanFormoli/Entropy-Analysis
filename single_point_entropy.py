@@ -5,6 +5,9 @@ from matplotlib import pyplot as plt
 from collections import Counter
 from scipy import stats
 
+# Set path to the desired output file
+CSV_OUTPUT_FILE="2023731_single_point_entropy_values_WHO_1800_cropped_region.csv"
+
 #opens the excel sheet as a dataframe so we can work with it in Pandas
 NTonly = pd.read_excel("new_1200_NProtein_final_combined_final_transl.xlsx")
 NTseq = NTonly.iloc[:, [0]]
@@ -16,7 +19,7 @@ for i in range(len(NTseq)):
     NTseqM.append(NTseq.iat[i,0])
 
 # start used for iteration
-start = 0 
+start = 0
 current = []
 unique_windows = []
 value = 0
@@ -26,15 +29,15 @@ seqCount = len(NTseqM)
 
 
 # loops through column
-while start < (len(NTseqM[0])): 
+while start < (len(NTseqM[0])):
     end = start + 1
 
     # appends each 1 amino acid window in all the rows
     for i in range(len(NTseqM)):
-        current.append(NTseqM[i][start:end])    
-        
+        current.append(NTseqM[i][start:end])
+
     # finds number of occurrence throughout all of the samples to use in calculation (print unique_windows to get a better idea)
-    unique_windows = Counter(current).values()  
+    unique_windows = Counter(current).values()
 
     #calculation for entropy values
     for x in unique_windows:
@@ -60,7 +63,7 @@ while start < (len(NTseqM[0])):
 # puts data into csv file
 entropy_table = {"Single Point Entropy Values": entropy_values}
 df = pd.DataFrame(entropy_table)
-df.to_csv("/Users/numaanformoli/Documents/EntropyAnalysis/EntropyValues/2023731_single_point_entropy_values_WHO_1800_cropped_region.csv")
+df.to_csv(CSV_OUTPUT_FILE)
 
 for i in range(len(NTseqM[0])):
     index.append(i)
@@ -72,7 +75,7 @@ plt.plot()
 plt.title("Shannon's Entropy")
 plt.ylabel('Entropy Values')
 plt.xlabel('Amino Acid Position')
-plt.show() 
+plt.show()
 
 
 
@@ -96,4 +99,3 @@ def rank_sum_test_window10(entropy_values):
 # c terminal (246 to 355)
 
 rank_sum_test_window10(entropy_values)
-

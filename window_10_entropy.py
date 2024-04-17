@@ -5,6 +5,9 @@ from matplotlib import pyplot as plt
 from collections import Counter
 from scipy import stats
 
+# Set path to the desired output file
+CSV_OUTPUT_FILE="2023731_window_10_entropy_values_WHO_1800_cropped_region.csv"
+
 #opens the excel sheet as a dataframe so we can work with it in Pandas
 NTonly = pd.read_excel("new_1200_NProtein_final_combined_final_transl.xlsx")
 NTseq = NTonly.iloc[:, [0]]
@@ -15,7 +18,7 @@ for i in range(len(NTseq)):
     NTseqM.append(NTseq.iat[i,0])
 
 # start used for iteration
-start = 0 
+start = 0
 current = []
 unique_windows = []
 value = 0
@@ -25,15 +28,15 @@ seqCount = len(NTseqM)
 
 
 # loops through column
-while start < (len(NTseqM[0])-9): 
+while start < (len(NTseqM[0])-9):
     end = start + 10
 
     # appends each 100 amino acid window in all the rows
     for i in range(len(NTseqM)):
-        current.append(NTseqM[i][start:end])    
-        
+        current.append(NTseqM[i][start:end])
+
     # finds number of occurrence of all unique 100 amino acid sequences in that specfic window for all the samples
-    unique_windows = Counter(current).values()  
+    unique_windows = Counter(current).values()
 
     #calculation for entropy values
     for x in unique_windows:
@@ -59,7 +62,7 @@ while start < (len(NTseqM[0])-9):
 # puts data into csv file
 entropy_table = {"Entropy Values": entropy_values}
 df = pd.DataFrame(entropy_table)
-df.to_csv("/Users/numaanformoli/Documents/EntropyAnalysis/EntropyValues/20230731_window_10_entropy_values_WHO_1800_cropped_region.csv")
+df.to_csv(CSV_OUTPUT_FILE)
 
 # puts starting point at midpoint 5
 index.extend([-4, -3, -2, -1])
@@ -74,7 +77,7 @@ plt.plot()
 plt.title("Shannon's Entropy")
 plt.ylabel('Entropy Values')
 plt.xlabel('Amino Acid Window 10')
-plt.show() 
+plt.show()
 
 
 #calculates rank sum and compares N_terminal and C_terminal
@@ -90,7 +93,7 @@ def rank_sum_test_window10(entropy_values):
     print(results)
 
 # n terminal (45 to 167)
-# c terminal (246 to 355) 
+# c terminal (246 to 355)
 
 def t_test_trimmed(entropy_values):
     values = entropy_values
@@ -129,4 +132,3 @@ rank_sum_test_window10(entropy_values)
 t_test_trimmed(entropy_values)
 fligner_killeen_test(entropy_values)
 test_variance(entropy_values)
-

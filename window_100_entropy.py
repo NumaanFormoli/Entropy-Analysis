@@ -3,6 +3,10 @@ import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt
 from collections import Counter
+
+# Set path to the desired output file
+CSV_OUTPUT_FILE="2023731_window_100_entropy_values_WHO_1800_cropped_region.csv"
+
 #opens the excel sheet as a dataframe so we can work with it in Pandas
 NTonly = pd.read_excel("new_1200_NProtein_final_combined_final_transl.xlsx")
 NTseq = NTonly.iloc[:, [0]]
@@ -23,9 +27,9 @@ for i in range(len(NTseq)):
 NTseqM = []  # list of sequences
 for i in range(len(NTseq)):
     NTseqM.append(NTseq.iat[i,0])
-    
+
 # start used for iteration
-start = 0 
+start = 0
 current = []
 unique_windows = []
 value = 0
@@ -35,15 +39,15 @@ seqCount = len(NTseqM)
 
 
 # loops through column
-while start < (len(NTseqM[0])-99): 
+while start < (len(NTseqM[0])-99):
     end = start + 100
 
     # appends each 100 amino acid window in all the rows
     for i in range(len(NTseqM)):
-        current.append(NTseqM[i][start:end])    
-        
+        current.append(NTseqM[i][start:end])
+
     # finds number of occurrence of all unique 100 amino acid sequences in that specfic window for all the samples
-    unique_windows = Counter(current).values()  
+    unique_windows = Counter(current).values()
 
     #calculation for entropy values
     for x in unique_windows:
@@ -60,19 +64,19 @@ while start < (len(NTseqM[0])-99):
     index = []                          # each position in one of the sequences
     sum = 0
 
-# entropy_table = {"Entropy Values": entropy_values}
-# df = pd.DataFrame(entropy_table)
-# df.to_csv("/Users/numaanformoli/Documents/EntropyAnalysis/entropy_values.csv")
+entropy_table = {"Entropy Values": entropy_values}
+df = pd.DataFrame(entropy_table)
+df.to_csv(CSV_OUTPUT_FILE)
 
 index.extend([x for x in range(-49,0)])
 
 for i in range(len(NTseqM[0])):
     index.append(i)
 plt.figure(figsize = (20, 7))
-plt.bar(index[0:(len(NTseqM[0])-99)],entropy_values) 
+plt.bar(index[0:(len(NTseqM[0])-99)],entropy_values)
 plt.xticks(np.arange(index[49], len(NTseqM[0])-99, 100))
 
 plt.title("Shannon's Entropy")
 plt.ylabel('Entropy Values')
 plt.xlabel('Amino Acids')
-plt.show() 
+plt.show()
